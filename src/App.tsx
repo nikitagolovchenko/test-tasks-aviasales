@@ -1,25 +1,31 @@
+import { Box, Container, Grid} from '@material-ui/core';
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Filter from './components/Filter';
+import SortButtons from './components/SortButtons';
+import Ticket from './components/Ticket';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box width='100%' position='relative' overflow='hidden' py={6}>
+      <Container maxWidth='md'>
+        <Box mb={3} textAlign='center' component='header'>
+          <img src='./logo.png' alt='aviasales' />
+        </Box>
+
+        <Grid container spacing={3}>
+          <Grid item xs={4}>
+            <Filter/>
+          </Grid>
+          <Grid item xs={8}>
+            <SortButtons/>
+            <Box>
+              <Ticket/>
+              <Ticket/>
+            </Box>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
   );
 }
 
