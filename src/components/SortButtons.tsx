@@ -6,19 +6,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     marginBottom: theme.spacing(3),
     '& > *': {
-      flexGrow: 1
-    }
-  }
-}))
+      flexGrow: 1,
+    },
+  },
+}));
 
 const SortButtons: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <ButtonGroup color='primary' className={classes.root}>
-      <Button variant="contained">One</Button>
-      <Button>Two</Button>
-      <Button>Three</Button>
+    <ButtonGroup color='primary' className={classes.root} size='large'>
+      <Button variant='contained'>Самый дешевый</Button>
+      <Button>Самый быстрый</Button>
+      <Button>Оптимальный</Button>
     </ButtonGroup>
   );
 };
