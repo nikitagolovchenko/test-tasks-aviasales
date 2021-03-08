@@ -47,7 +47,7 @@ const Ticket: React.FC = () => {
               <Typography variant='h5' color='primary'>
                 13 400 Р{' '}
               </Typography>
-              <img src='./logo.png' alt='image description' />
+              <img src='./logo.png' alt='aviasales tickets' />
             </Box>
             <Box>
               <List className={classes.list}>
