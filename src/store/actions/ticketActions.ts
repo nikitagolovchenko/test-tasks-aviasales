@@ -11,12 +11,11 @@ export const getTicket = (): ThunkAction<
   return async (dispatch, getState) => {
     dispatch(ticketLoading());
 
-    const responseSearchId = await fetch(
-      process.env.REACT_APP_API_SEARCH_ID as string
-    );
+    const responseSearchId = await fetch('https://front-test.beta.aviasales.ru/search');
     const { searchId } = await responseSearchId.json();
     let stopFetch: boolean = false;
     let allTickets: Ticket[] = [];
+
 
     console.log(searchId);
 
