@@ -11,7 +11,7 @@ export const getTicket = (): ThunkAction<
   return async (dispatch, getState) => {
     dispatch(ticketLoading());
 
-    const responseSearchId = await fetch(`${process.env.REACT_APP_API_SEARCH_ID}`);
+    const responseSearchId = await fetch('https://front-test.beta.aviasales.ru/search');
     const { searchId } = await responseSearchId.json();
     let stopFetch: boolean = false;
     let allTickets: Ticket[] = [];
@@ -20,7 +20,7 @@ export const getTicket = (): ThunkAction<
       if (!stopFetch) {
         try {
           const responseTickets = await fetch(
-            `${process.env.REACT_APP_API_TICKETS}?searchId=${searchId}`
+            `https://front-test.beta.aviasales.ru/tickets?searchId=${searchId}`
           );
 
           const tickets = await responseTickets.json();
