@@ -18,16 +18,22 @@ const useStyles = makeStyles((theme: Theme) => ({
 const SortButtons: React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { btns, activeBtn } = useSelector(
-    (state: RootState) => state.ticket.sortBtns
-  );
+  const {
+    sortBtns: { btns, activeBtn },
+    loading,
+  } = useSelector((state: RootState) => state.ticket);
 
   const sorting = (sort: SortBtn): void => {
     dispatch(ticketSorting(sort));
   };
 
   return (
-    <ButtonGroup color='primary' className={classes.root} size='large'>
+    <ButtonGroup
+      color='primary'
+      className={classes.root}
+      size='large'
+      disabled={loading}
+    >
       {btns.map(el => (
         <Button
           key={el.name}

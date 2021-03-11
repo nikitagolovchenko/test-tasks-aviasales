@@ -49,7 +49,13 @@ const ticketReducer = (
           return { ...state, activeTickets: state.activeTickets.sort((a,b) => (a.segments[0].duration + a.segments[1].duration) - (b.segments[0].duration + b.segments[1].duration)), sortBtns: { ...state.sortBtns, activeBtn: action.payload }}
 
         case SortBtns.OPTIMAL:
-          return { ...state, activeTickets: state.activeTickets.sort((a,b) => ((a.price * (a.segments[0].duration + a.segments[1].duration)) / 2) - ((b.price * (b.segments[0].duration + b.segments[1].duration)) / 2)), sortBtns: { ...state.sortBtns, activeBtn: action.payload }}
+          const {price: minPrice} = state.activeTickets.reduce((acc, curr) => acc.price < curr.price ? acc : curr);
+          const minDurationTicket = state.activeTickets.reduce((acc, curr) => acc.segments[0].duration + acc.segments[1].duration < curr.segments[0].duration + curr.segments[1].duration ? acc : curr);
+          const minDuration: number = minDurationTicket.segments[0].duration + minDurationTicket.segments[1].duration;
+          
+          return { ...state, 
+            activeTickets: state.activeTickets.sort((a,b) => ((a.price * 100 / minPrice) + (a.segments[0].duration + a.segments[1].duration) * 100 / minDuration) / 2 - ((b.price * 100 / minPrice) + (b.segments[0].duration + b.segments[1].duration) * 100 / minDuration) / 2), 
+            sortBtns: { ...state.sortBtns, activeBtn: action.payload }}
 
         default:
           return { ...state}
