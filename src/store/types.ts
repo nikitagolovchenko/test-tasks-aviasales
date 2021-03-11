@@ -1,6 +1,14 @@
 export enum TicketActions {
   TICKET_LOADING = 'TICKET_LOADING',
   TICKET_SUCCESS = 'TICKET_SUCCESS',
+  TICKET_SORTING = 'TICKET_SORTING',
+  GET_MORE_TICKET = 'GET_MORE_TICKET',
+}
+
+export enum SortBtns {
+  CHEAP = 'CHEAP',
+  FAST = 'FAST',
+  OPTIMAL = 'OPTIMAL'
 }
 
 interface Segments {
@@ -17,9 +25,19 @@ export interface Ticket {
   segments: Segments[];
 }
 
+export type SortBtn = SortBtns.CHEAP | SortBtns.FAST | SortBtns.OPTIMAL;
+
 export interface TicketState {
   tickets: Ticket[];
+  activeTickets: Ticket[];
   loading: boolean;
+  sortBtns: {
+    btns: { name: SortBtn; text: string }[];
+    activeBtn: SortBtn;
+  };
+  limit: number;
+  page: number;
+  total: number;
 }
 
 interface TicketLoading {
@@ -31,4 +49,13 @@ interface TicketSuccess {
   payload: Ticket[];
 }
 
-export type TicketAction = TicketLoading | TicketSuccess;
+interface TicketSorting {
+  type: TicketActions.TICKET_SORTING;
+  payload: SortBtn;
+}
+
+interface GetMoreTicket {
+  type: TicketActions.GET_MORE_TICKET;
+}
+
+export type TicketAction = TicketLoading | TicketSuccess | TicketSorting | GetMoreTicket;

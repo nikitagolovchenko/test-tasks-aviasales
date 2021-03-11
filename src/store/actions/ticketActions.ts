@@ -1,6 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from '../reducers/rootReducer';
-import { Ticket, TicketAction, TicketActions } from '../types';
+import { SortBtn, Ticket, TicketAction, TicketActions } from '../types';
 
 export const getTicket = (): ThunkAction<
   void,
@@ -24,6 +24,7 @@ export const getTicket = (): ThunkAction<
           const responseTickets = await fetch(
             `${process.env.REACT_APP_API_TICKETS}?searchId=${searchId}`
           );
+
           const tickets = await responseTickets.json();
 
           stopFetch = tickets.stop;
@@ -44,6 +45,11 @@ export const getTicket = (): ThunkAction<
       type: TicketActions.TICKET_SUCCESS,
       payload: allTickets,
     });
+
+    dispatch({
+      type: TicketActions.TICKET_SORTING,
+      payload: getState().ticket.sortBtns.activeBtn,
+    });
   };
 };
 
@@ -52,3 +58,16 @@ const ticketLoading = (): TicketAction => {
     type: TicketActions.TICKET_LOADING,
   };
 };
+
+export const ticketSorting = (sort: SortBtn): TicketAction => {
+  return {
+    type: TicketActions.TICKET_SORTING,
+    payload: sort
+  }
+}
+
+export const getMoreTicket = (): TicketAction => {
+  return {
+    type: TicketActions.GET_MORE_TICKET
+  }
+}

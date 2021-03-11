@@ -1,5 +1,9 @@
 import { Button, ButtonGroup, makeStyles, Theme } from '@material-ui/core';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { ticketSorting } from '../store/actions/ticketActions';
+import { RootState } from '../store/reducers/rootReducer';
+import { SortBtn } from '../store/types';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -13,12 +17,27 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const SortButtons: React.FC = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { btns, activeBtn } = useSelector(
+    (state: RootState) => state.ticket.sortBtns
+  );
+
+  const sorting = (sort: SortBtn): void => {
+    dispatch(ticketSorting(sort));
+  };
 
   return (
     <ButtonGroup color='primary' className={classes.root} size='large'>
-      <Button variant='contained'>Самый дешевый</Button>
-      <Button>Самый быстрый</Button>
-      <Button>Оптимальный</Button>
+      {btns.map(el => (
+        <Button
+          key={el.name}
+          name={el.name}
+          variant={el.name === activeBtn ? 'contained' : 'outlined'}
+          onClick={() => sorting(el.name)}
+        >
+          {el.text}
+        </Button>
+      ))}
     </ButtonGroup>
   );
 };

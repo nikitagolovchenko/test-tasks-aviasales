@@ -4,14 +4,15 @@ import {
   CssBaseline,
   Grid,
   LinearProgress,
+  Button,
 } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Filter from './components/Filter';
 import SortButtons from './components/SortButtons';
-import Ticket from './components/Ticket';
+import TicketItem from './components/TicketItem';
 import { RootState } from './store/reducers/rootReducer';
-import { getTicket } from './store/actions/ticketActions';
+import { getMoreTicket, getTicket } from './store/actions/ticketActions';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,10 @@ const App: React.FC = () => {
   useEffect(() => {
     dispatch(getTicket());
   }, []);
+
+  const showMoreTicket = () => {
+    dispatch(getMoreTicket());
+  }
 
   return (
     <Box width='100%' position='relative' overflow='hidden' py={6}>
@@ -41,10 +46,24 @@ const App: React.FC = () => {
           </Grid>
           <Grid item xs={8}>
             <SortButtons />
-            <Box>
-              <Ticket />
-              <Ticket />
+            <Box mb={3}>
+              {ticket.activeTickets
+                .slice(0, ticket.limit * ticket.page)
+                .map((el, index) => (
+                  <TicketItem key={index} ticket={el} />
+                ))}
             </Box>
+            {ticket.total > 0 && ticket.limit * ticket.page < ticket.total && (
+              <Button
+                variant='contained'
+                size='large'
+                color='primary'
+                fullWidth
+                onClick={showMoreTicket}
+              >
+                Показать еще 5 билетов!
+              </Button>
+            )}
           </Grid>
         </Grid>
       </Container>
