@@ -18,28 +18,30 @@ export const getTicket = (): ThunkAction<
     let stopFetch: boolean = false;
     let allTickets: Ticket[] = [];
 
-    const fetchData = async (): Promise<any> => {
-      if (!stopFetch) {
-        try {
-          const responseTickets = await fetch(
-            `${process.env.REACT_APP_API_TICKETS}?searchId=${searchId}`
-          );
+    console.log(searchId);
 
-          const tickets = await responseTickets.json();
+    // const fetchData = async (): Promise<any> => {
+    //   if (!stopFetch) {
+    //     try {
+    //       const responseTickets = await fetch(
+    //         `${process.env.REACT_APP_API_TICKETS}?searchId=${searchId}`
+    //       );
 
-          stopFetch = tickets.stop;
-          allTickets = tickets.tickets;
-        } catch (error) {
-          return fetchData();
-        }
+    //       const tickets = await responseTickets.json();
 
-        return fetchData();
-      } else {
-        return;
-      }
-    };
+    //       stopFetch = tickets.stop;
+    //       allTickets = tickets.tickets;
+    //     } catch (error) {
+    //       return fetchData();
+    //     }
 
-    await fetchData();
+    //     return fetchData();
+    //   } else {
+    //     return;
+    //   }
+    // };
+
+    // await fetchData();
 
     dispatch({
       type: TicketActions.TICKET_SUCCESS,
