@@ -86,21 +86,37 @@ export const ticketFiltering = (
         break;
 
       case FilterBtns.WITHOUT_TRANSFERS:
-        filterTickets = allTickets.filter(el => el.segments[0].stops.length < 1 || el.segments[1].stops.length < 1);
+        filterTickets = allTickets.filter(
+          el =>
+            el.segments[0].stops.length < 1 || el.segments[1].stops.length < 1
+        );
         break;
 
       case FilterBtns.ONE_TRANSFERS:
-        filterTickets = allTickets.filter(el => el.segments[0].stops.length === 1 || el.segments[1].stops.length === 1);
+        filterTickets = allTickets.filter(
+          el =>
+            el.segments[0].stops.length === 1 ||
+            el.segments[1].stops.length === 1
+        );
         break;
 
       case FilterBtns.TWO_TRANSFERS:
-        filterTickets = allTickets.filter(el => el.segments[0].stops.length < 3 && el.segments[0].stops.length > 1 || el.segments[1].stops.length < 3 && el.segments[0].stops.length > 1 );
+        // eslint-disable-next-line
+        filterTickets = allTickets.filter(
+          el =>
+            (el.segments[0].stops.length < 3 &&
+              el.segments[0].stops.length > 1) ||
+            (el.segments[1].stops.length < 3 && el.segments[0].stops.length > 1)
+        );
         break;
 
       case FilterBtns.THREE_TRANSFERS:
-        filterTickets = allTickets.filter(el => el.segments[0].stops.length > 2 || el.segments[1].stops.length > 2 );
+        filterTickets = allTickets.filter(
+          el =>
+            el.segments[0].stops.length > 2 || el.segments[1].stops.length > 2
+        );
         break;
-      
+
       default:
         filterTickets = allTickets;
         break;
@@ -116,8 +132,8 @@ export const ticketFiltering = (
 
     dispatch({
       type: TicketActions.TICKET_SORTING,
-      payload: getState().ticket.sortBtns.activeBtn
-    })
+      payload: getState().ticket.sortBtns.activeBtn,
+    });
   };
 };
 

@@ -9,10 +9,26 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: '100%',
     marginBottom: theme.spacing(3),
+    flexDirection: 'column',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row'
+    },
+    [theme.breakpoints.down('xs')]: {
+      '& $btn': {
+        borderRadius: theme.shape.borderRadius,
+        borderColor: theme.palette.primary.light,
+        marginBottom: theme.spacing(1),
+        '&:last-child': {
+          marginBottom: 0
+        }
+      }
+    },
     '& > *': {
       flexGrow: 1,
     },
   },
+  btn: {
+  }
 }));
 
 const SortButtons: React.FC = () => {
@@ -40,6 +56,7 @@ const SortButtons: React.FC = () => {
           name={el.name}
           variant={el.name === activeBtn ? 'contained' : 'outlined'}
           onClick={() => sorting(el.name)}
+          className={classes.btn}
         >
           {el.text}
         </Button>
