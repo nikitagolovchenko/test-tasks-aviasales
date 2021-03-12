@@ -60,7 +60,7 @@ const TicketItem: React.FC<TicketProps> = ({ ticket }) => {
                 {changePrice(ticket.price)} {'P'}
               </Typography>
               <img
-                src={`https://pics.avs.io/99/36/${ticket.carrier}.png`}
+                src={`${process.env.REACT_APP_API_IMAGES}${ticket.carrier}.png`}
                 alt={ticket.carrier}
               />
             </Box>
