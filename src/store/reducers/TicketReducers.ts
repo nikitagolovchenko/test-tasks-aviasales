@@ -1,4 +1,10 @@
-import { SortBtns, TicketAction, TicketActions, TicketState } from './../types';
+import {
+  FilterBtns,
+  SortBtns,
+  TicketAction,
+  TicketActions,
+  TicketState,
+} from './../types';
 
 const initialState: TicketState = {
   tickets: [],
@@ -21,9 +27,34 @@ const initialState: TicketState = {
     ],
     activeBtn: SortBtns.CHEAP,
   },
+  filterBtns: {
+    btns: [
+      {
+        name: FilterBtns.ALL,
+        text: 'Все',
+      },
+      {
+        name: FilterBtns.WITHOUT_TRANSFERS,
+        text: 'Без пересадок',
+      },
+      {
+        name: FilterBtns.ONE_TRANSFERS,
+        text: '1 пересадка',
+      },
+      {
+        name: FilterBtns.TWO_TRANSFERS,
+        text: '2 пересадки',
+      },
+      {
+        name: FilterBtns.THREE_TRANSFERS,
+        text: '3 пересадки',
+      },
+    ],
+    activeBtn: FilterBtns.ALL,
+  },
   limit: 5,
   page: 1,
-  total: 0
+  total: 0,
 };
 
 const ticketReducer = (
@@ -35,32 +66,83 @@ const ticketReducer = (
       return { ...state, loading: true };
 
     case TicketActions.TICKET_SUCCESS:
-      return { ...state, loading: false, tickets: action.payload, activeTickets: action.payload, total: action.payload.length };
+      return {
+        ...state,
+        loading: false,
+        tickets: action.payload,
+        activeTickets: action.payload,
+        total: action.payload.length,
+      };
 
     case TicketActions.GET_MORE_TICKET:
-      return { ...state, page: state.page + 1};
-      
+      return { ...state, page: state.page + 1 };
+
     case TicketActions.TICKET_SORTING:
       switch (action.payload) {
         case SortBtns.CHEAP:
-          return { ...state, activeTickets: state.activeTickets.sort((a,b) => a.price - b.price), sortBtns: { ...state.sortBtns, activeBtn: action.payload }}
+          return {
+            ...state,
+            activeTickets: state.activeTickets.sort(
+              (a, b) => a.price - b.price
+            ),
+            sortBtns: { ...state.sortBtns, activeBtn: action.payload },
+          };
 
         case SortBtns.FAST:
-          return { ...state, activeTickets: state.activeTickets.sort((a,b) => (a.segments[0].duration + a.segments[1].duration) - (b.segments[0].duration + b.segments[1].duration)), sortBtns: { ...state.sortBtns, activeBtn: action.payload }}
+          return {
+            ...state,
+            activeTickets: state.activeTickets.sort(
+              (a, b) =>
+                a.segments[0].duration +
+                a.segments[1].duration -
+                (b.segments[0].duration + b.segments[1].duration)
+            ),
+            sortBtns: { ...state.sortBtns, activeBtn: action.payload },
+          };
 
         case SortBtns.OPTIMAL:
-          const {price: minPrice} = state.activeTickets.reduce((acc, curr) => acc.price < curr.price ? acc : curr);
-          const minDurationTicket = state.activeTickets.reduce((acc, curr) => acc.segments[0].duration + acc.segments[1].duration < curr.segments[0].duration + curr.segments[1].duration ? acc : curr);
-          const minDuration: number = minDurationTicket.segments[0].duration + minDurationTicket.segments[1].duration;
-          
-          return { ...state, 
-            activeTickets: state.activeTickets.sort((a,b) => ((a.price * 100 / minPrice) + (a.segments[0].duration + a.segments[1].duration) * 100 / minDuration) / 2 - ((b.price * 100 / minPrice) + (b.segments[0].duration + b.segments[1].duration) * 100 / minDuration) / 2), 
-            sortBtns: { ...state.sortBtns, activeBtn: action.payload }}
+          const { price: minPrice } = state.activeTickets.reduce((acc, curr) =>
+            acc.price < curr.price ? acc : curr
+          );
+          const minDurationTicket = state.activeTickets.reduce((acc, curr) =>
+            acc.segments[0].duration + acc.segments[1].duration <
+            curr.segments[0].duration + curr.segments[1].duration
+              ? acc
+              : curr
+          );
+          const minDuration: number =
+            minDurationTicket.segments[0].duration +
+            minDurationTicket.segments[1].duration;
+
+          return {
+            ...state,
+            activeTickets: state.activeTickets.sort(
+              (a, b) =>
+                ((a.price * 100) / minPrice +
+                  ((a.segments[0].duration + a.segments[1].duration) * 100) /
+                    minDuration) /
+                  2 -
+                ((b.price * 100) / minPrice +
+                  ((b.segments[0].duration + b.segments[1].duration) * 100) /
+                    minDuration) /
+                  2
+            ),
+            sortBtns: { ...state.sortBtns, activeBtn: action.payload },
+          };
 
         default:
-          return { ...state}
+          return { ...state };
       }
-    
+
+    case TicketActions.TICKET_FILTERING:
+      return {
+        ...state,
+        activeTickets: action.payload.tickets,
+        filterBtns: { ...state.filterBtns, activeBtn: action.payload.filter },
+        total: action.payload.tickets.length,
+        page: 1,
+      };
+
     default:
       return state;
   }

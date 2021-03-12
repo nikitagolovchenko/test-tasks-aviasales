@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Checkbox,
@@ -6,67 +6,41 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core';
-
-interface Transfers {
-  label: string;
-  checked: boolean;
-}
-
-interface TransfersList {
-  [key: string]: Transfers;
-}
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/reducers/rootReducer';
+import { ticketFiltering } from '../store/actions/ticketActions';
+import { FilterBtn } from '../store/types';
 
 const Filter: React.FC = () => {
-  const [transfers, setTransfers] = useState<TransfersList>({
-    all: {
-      label: 'Все',
-      checked: true,
-    },
-    withoutTransfers: {
-      label: 'Без пересадок',
-      checked: false,
-    },
-    oneTransfers: {
-      label: '1 пересадка',
-      checked: false,
-    },
-    twoTransfers: {
-      label: '2 пересадки',
-      checked: false,
-    },
-    threeTransfers: {
-      label: '3 пересадки',
-      checked: false,
-    },
-  });
+  const dispatch = useDispatch();
+  const { loading, filterBtns } = useSelector(
+    (state: RootState) => state.ticket
+  );
 
   const checkHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setTransfers(prev => ({ ...prev, [e.target.name]: {
-      ...prev[e.target.name], checked: e.target.checked
-    } }))
+    dispatch(ticketFiltering(e.target.name as FilterBtn));
   };
 
   return (
     <Paper>
       <Box p={2}>
         <Typography variant='button'>Количество пересадок</Typography>
-        {Object.keys(transfers).map((el, index) => {
-          return (
-            <Box key={index}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={transfers[el].checked}
-                    onChange={checkHandler}
-                    name={el}
-                    color='primary'
-                  />
-                }
-                label={transfers[el].label}
-              />
-            </Box>
-          );
-        })}
+        {filterBtns.btns.map((el, index) => (
+          <Box key={index}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  disabled={loading}
+                  checked={el.name === filterBtns.activeBtn}
+                  onChange={checkHandler}
+                  name={el.name}
+                  color='primary'
+                />
+              }
+              label={el.text}
+            />
+          </Box>
+        ))}
       </Box>
     </Paper>
   );
