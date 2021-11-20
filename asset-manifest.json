@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.js": "/test-tasks-aviasales/static/js/main.ccf24e06.chunk.js",
+    "main.js.map": "/test-tasks-aviasales/static/js/main.ccf24e06.chunk.js.map",
+    "runtime-main.js": "/test-tasks-aviasales/static/js/runtime-main.f33f9711.js",
+    "runtime-main.js.map": "/test-tasks-aviasales/static/js/runtime-main.f33f9711.js.map",
+    "static/js/2.795e0436.chunk.js": "/test-tasks-aviasales/static/js/2.795e0436.chunk.js",
+    "static/js/2.795e0436.chunk.js.map": "/test-tasks-aviasales/static/js/2.795e0436.chunk.js.map",
+    "static/js/3.d894ad39.chunk.js": "/test-tasks-aviasales/static/js/3.d894ad39.chunk.js",
+    "static/js/3.d894ad39.chunk.js.map": "/test-tasks-aviasales/static/js/3.d894ad39.chunk.js.map",
+    "index.html": "/test-tasks-aviasales/index.html",
+    "static/js/2.795e0436.chunk.js.LICENSE.txt": "/test-tasks-aviasales/static/js/2.795e0436.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f33f9711.js",
+    "static/js/2.795e0436.chunk.js",
+    "static/js/main.ccf24e06.chunk.js"
+  ]
+}
